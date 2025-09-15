@@ -2,95 +2,73 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Pi Shield Design System - Premium Gradient Theme */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
-
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  .dark {
-    --background: 222.2 84% 4.9%;
+    /* Pi Shield Color Palette */
+    --background: 215 28% 17%;
     --foreground: 210 40% 98%;
 
-    --card: 222.2 84% 4.9%;
+    /* Glass Morphism Cards */
+    --card: 215 25% 20%;
     --card-foreground: 210 40% 98%;
+    --glass: 215 25% 20% / 0.8;
 
-    --popover: 222.2 84% 4.9%;
+    --popover: 215 25% 20%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    /* Vibrant Gradient Primary */
+    --primary: 258 90% 66%;
+    --primary-glow: 266 85% 74%;
+    --primary-foreground: 210 40% 98%;
 
-    --secondary: 217.2 32.6% 17.5%;
+    /* Secondary Gradient */
+    --secondary: 315 85% 70%;
+    --secondary-glow: 320 88% 75%;
     --secondary-foreground: 210 40% 98%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    /* Accent Orange */
+    --accent: 25 95% 65%;
+    --accent-glow: 30 100% 70%;
+    --accent-foreground: 215 28% 17%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --muted: 215 20% 25%;
+    --muted-foreground: 215 12% 65%;
 
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 0 85% 65%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --border: 215 20% 25%;
+    --input: 215 20% 25%;
+    --ring: 258 90% 66%;
+
+    --radius: 1rem;
+
+    /* Premium Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(258 90% 66%), hsl(266 85% 74%));
+    --gradient-secondary: linear-gradient(135deg, hsl(315 85% 70%), hsl(320 88% 75%));
+    --gradient-accent: linear-gradient(135deg, hsl(25 95% 65%), hsl(30 100% 70%));
+    --gradient-hero: linear-gradient(135deg, hsl(258 90% 66%), hsl(315 85% 70%), hsl(25 95% 65%));
+    --gradient-glass: linear-gradient(135deg, hsl(215 25% 20% / 0.8), hsl(215 25% 25% / 0.6));
+    
+    /* Glow Effects */
+    --glow-primary: 0 0 40px hsl(258 90% 66% / 0.3);
+    --glow-secondary: 0 0 40px hsl(315 85% 70% / 0.3);
+    --glow-accent: 0 0 40px hsl(25 95% 65% / 0.3);
+    
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-glow: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+        --sidebar-background: 215 25% 20%;
+        --sidebar-foreground: 210 40% 98%;
+        --sidebar-primary: 258 90% 66%;
+        --sidebar-primary-foreground: 210 40% 98%;
+        --sidebar-accent: 215 20% 25%;
+        --sidebar-accent-foreground: 210 40% 98%;
+        --sidebar-border: 215 20% 25%;
+        --sidebar-ring: 258 90% 66%;
   }
 }
 
@@ -100,6 +78,71 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground min-h-screen;
+  }
+}
+
+@layer components {
+  /* Glass Morphism Effects */
+  .glass {
+    @apply backdrop-blur-xl bg-gradient-to-br from-card/80 to-card/60 border border-white/10;
+  }
+
+  .glass-subtle {
+    @apply backdrop-blur-sm bg-gradient-to-br from-card/60 to-card/40 border border-white/5;
+  }
+
+  /* Premium Gradient Buttons */
+  .btn-hero {
+    @apply bg-gradient-to-r from-primary via-secondary to-accent text-primary-foreground px-8 py-4 rounded-2xl font-semibold shadow-lg transition-all duration-300 hover:shadow-[var(--glow-primary)] hover:scale-105;
+  }
+
+  .btn-primary {
+    @apply bg-gradient-to-r from-primary to-primary-glow text-primary-foreground px-6 py-3 rounded-xl font-medium shadow-md transition-all duration-300 hover:shadow-[var(--glow-primary)] hover:scale-105;
+  }
+
+  .btn-secondary {
+    @apply bg-gradient-to-r from-secondary to-secondary-glow text-secondary-foreground px-6 py-3 rounded-xl font-medium shadow-md transition-all duration-300 hover:shadow-[var(--glow-secondary)] hover:scale-105;
+  }
+
+  /* Premium Cards */
+  .card-premium {
+    @apply glass rounded-2xl p-6 shadow-xl transition-all duration-300 hover:shadow-2xl hover:scale-105;
+  }
+
+  .card-glow {
+    @apply glass rounded-2xl p-6 shadow-xl transition-all duration-300 hover:shadow-[var(--glow-primary)] hover:scale-105;
+  }
+
+  /* Text Gradients */
+  .text-gradient-primary {
+    @apply bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent;
+  }
+
+  .text-gradient-hero {
+    @apply bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-bold;
+  }
+
+  /* Animated Elements */
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes glow {
+    from {
+      box-shadow: var(--glow-primary);
+    }
+    to {
+      box-shadow: var(--glow-secondary);
+    }
+  }
+
+  /* Hover Effects */
+  .hover-lift {
+    @apply transition-all duration-300 hover:scale-105 hover:shadow-xl;
+  }
+
+  .hover-glow {
+    @apply transition-all duration-300 hover:shadow-[var(--glow-primary)];
   }
 }

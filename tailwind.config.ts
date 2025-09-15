@@ -21,10 +21,12 @@ export default {
         foreground: "hsl(var(--foreground))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
+          glow: "hsl(var(--primary-glow))",
           foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
+          glow: "hsl(var(--secondary-glow))",
           foreground: "hsl(var(--secondary-foreground))",
         },
         destructive: {
@@ -37,6 +39,7 @@ export default {
         },
         accent: {
           DEFAULT: "hsl(var(--accent))",
+          glow: "hsl(var(--accent-glow))",
           foreground: "hsl(var(--accent-foreground))",
         },
         popover: {
@@ -47,6 +50,7 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        glass: "hsl(var(--glass))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
