@@ -14,7 +14,78 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      analysis_history: {
+        Row: {
+          ai_generated_probability: number | null
+          analysis_type: string
+          confidence_score: number | null
+          created_at: string
+          file_name: string
+          file_type: string
+          file_url: string
+          id: string
+          is_deepfake: boolean | null
+          results: Json
+          user_id: string
+        }
+        Insert: {
+          ai_generated_probability?: number | null
+          analysis_type: string
+          confidence_score?: number | null
+          created_at?: string
+          file_name: string
+          file_type: string
+          file_url: string
+          id?: string
+          is_deepfake?: boolean | null
+          results: Json
+          user_id: string
+        }
+        Update: {
+          ai_generated_probability?: number | null
+          analysis_type?: string
+          confidence_score?: number | null
+          created_at?: string
+          file_name?: string
+          file_type?: string
+          file_url?: string
+          id?: string
+          is_deepfake?: boolean | null
+          results?: Json
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
