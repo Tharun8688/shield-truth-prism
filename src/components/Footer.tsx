@@ -14,7 +14,7 @@ export const Footer = () => {
               <span className="text-xl font-bold text-gradient-primary">Pi Shield</span>
             </div>
             <p className="text-muted-foreground mb-4 max-w-md">
-              AI-powered misinformation detection platform. Made to Feel. Built to Reel.
+              AI-powered tool for combating misinformation. Made to Feel. Built to Reel.
             </p>
             <p className="text-sm text-muted-foreground/80">
               Protecting democracy through truth and transparency.
