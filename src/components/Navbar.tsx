@@ -17,7 +17,6 @@ export const Navbar = () => {
 
   const handleSignOut = async () => {
     await signOut();
-    navigate('/auth');
   };
 
   return (
@@ -50,7 +49,7 @@ export const Navbar = () => {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center space-x-4">
-            {user ? (
+            {user && (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="flex items-center space-x-2">
@@ -65,22 +64,6 @@ export const Navbar = () => {
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-            ) : (
-              <>
-                <Button 
-                  variant="ghost" 
-                  className="text-muted-foreground hover:text-primary"
-                  onClick={() => navigate('/auth')}
-                >
-                  Sign In
-                </Button>
-                <Button 
-                  className="btn-primary"
-                  onClick={() => navigate('/auth')}
-                >
-                  Get Started
-                </Button>
-              </>
             )}
           </div>
 
@@ -112,7 +95,7 @@ export const Navbar = () => {
                 About
               </a>
               <div className="flex flex-col space-y-3 pt-4 border-t border-white/10">
-                {user ? (
+                {user && (
                   <Button 
                     variant="ghost" 
                     className="justify-start"
@@ -121,22 +104,6 @@ export const Navbar = () => {
                     <LogOut className="h-4 w-4 mr-2" />
                     Sign Out
                   </Button>
-                ) : (
-                  <>
-                    <Button 
-                      variant="ghost" 
-                      className="text-muted-foreground hover:text-primary justify-start"
-                      onClick={() => navigate('/auth')}
-                    >
-                      Sign In
-                    </Button>
-                    <Button 
-                      className="btn-primary justify-start"
-                      onClick={() => navigate('/auth')}
-                    >
-                      Get Started
-                    </Button>
-                  </>
                 )}
               </div>
             </div>

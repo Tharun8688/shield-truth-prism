@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -6,23 +6,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
 
-const AuthPage = () => {
+const AuthForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const { toast } = useToast();
-const navigate = useNavigate();
-  const { user, loading } = useAuth();
-
-  useEffect(() => {
-    if (!loading && user) {
-      navigate('/');
-    }
-  }, [user, loading, navigate]);
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -73,8 +63,6 @@ const navigate = useNavigate();
         title: "Welcome back!",
         description: "You have been signed in successfully.",
       });
-      
-      navigate('/');
     } catch (error: any) {
       toast({
         title: "Error",
@@ -87,12 +75,12 @@ const navigate = useNavigate();
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-primary/10 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md glass">
+    <div className="w-full max-w-md mx-auto">
+      <Card className="glass">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold">Pi Shield</CardTitle>
           <CardDescription>
-            Authenticate to access AI-powered media analysis
+            Sign in to access AI-powered media analysis
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -187,4 +175,4 @@ const navigate = useNavigate();
   );
 };
 
-export default AuthPage;
+export default AuthForm;

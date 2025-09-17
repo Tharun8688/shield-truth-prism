@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
 import { Features } from "@/components/Features";
@@ -8,20 +7,13 @@ import { Footer } from "@/components/Footer";
 import FileUpload from "@/components/FileUpload";
 import AnalysisResults from "@/components/AnalysisResults";
 import AnalysisHistory from "@/components/AnalysisHistory";
+import AuthForm from "@/components/AuthForm";
 import { useAuth } from "@/hooks/useAuth";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Index = () => {
   const { user, loading } = useAuth();
   const [analysisResults, setAnalysisResults] = useState(null);
-  const navigate = useNavigate();
-
-  // Redirect to auth if not authenticated
-  useEffect(() => {
-    if (!loading && !user) {
-      navigate('/auth');
-    }
-  }, [user, loading, navigate]);
 
   if (loading) {
     return (
@@ -36,10 +28,36 @@ const Index = () => {
     );
   }
 
-  if (!user) {
-    return null; // Will redirect to auth
+  // Show authentication form if not logged in
+  if (!loading && !user) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <main className="pt-20 pb-16">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="text-center mb-12">
+              <h1 className="text-4xl font-bold text-gradient-primary mb-4">
+                Welcome to Pi Shield
+              </h1>
+              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+                Sign in to analyze your media files with advanced AI and detect deepfakes and AI-generated content
+              </p>
+            </div>
+            <AuthForm />
+          </div>
+
+          {/* Marketing sections */}
+          <div className="mt-24 space-y-24">
+            <Features />
+            <Tutorial />
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
   }
 
+  // Show dashboard when authenticated
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
