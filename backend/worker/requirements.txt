@@ -1,0 +1,8 @@
+redis==5.0.1
+asyncpg==0.29.0
+google-cloud-storage==2.10.0
+google-cloud-vision==3.4.5
+google-cloud-speech==2.21.0
+google-cloud-videointelligence==2.11.4
+Pillow==10.1.0
+structlog==23.2.0

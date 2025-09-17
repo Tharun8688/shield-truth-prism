@@ -1,0 +1,120 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pi-shield-api
+  namespace: pi-shield
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: pi-shield-api
+  template:
+    metadata:
+      labels:
+        app: pi-shield-api
+    spec:
+      containers:
+      - name: api
+        image: gcr.io/PROJECT_ID/pi-shield-api:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: pi-shield-secrets
+              key: SECRET_KEY
+        - name: DATABASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: pi-shield-config
+              key: DATABASE_URL
+        - name: REDIS_URL
+          valueFrom:
+            configMapKeyRef:
+              name: pi-shield-config
+              key: REDIS_URL
+        - name: GCS_BUCKET
+          valueFrom:
+            configMapKeyRef:
+              name: pi-shield-config
+              key: GCS_BUCKET
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: /etc/gcp/credentials.json
+        volumeMounts:
+        - name: gcp-credentials
+          mountPath: /etc/gcp
+          readOnly: true
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+      volumes:
+      - name: gcp-credentials
+        secret:
+          secretName: pi-shield-secrets
+          items:
+          - key: GCP_CREDENTIALS
+            path: credentials.json
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pi-shield-api-service
+  namespace: pi-shield
+spec:
+  selector:
+    app: pi-shield-api
+  ports:
+  - port: 80
+    targetPort: 8080
+  type: ClusterIP
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pi-shield-api-ingress
+  namespace: pi-shield
+  annotations:
+    kubernetes.io/ingress.class: "gce"
+    kubernetes.io/ingress.global-static-ip-name: "pi-shield-ip"
+    networking.gke.io/managed-certificates: "pi-shield-ssl-cert"
+spec:
+  rules:
+  - host: api.pishield.com
+    http:
+      paths:
+      - path: /*
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: pi-shield-api-service
+            port:
+              number: 80
+
+---
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: pi-shield-ssl-cert
+  namespace: pi-shield
+spec:
+  domains:
+    - api.pishield.com

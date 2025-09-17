@@ -1,0 +1,141 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  namespace: pi-shield
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:15-alpine
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_DB
+          value: pishield
+        - name: POSTGRES_USER
+          value: pishield
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: pi-shield-secrets
+              key: POSTGRES_PASSWORD
+        volumeMounts:
+        - name: postgres-storage
+          mountPath: /var/lib/postgresql/data
+        - name: init-sql
+          mountPath: /docker-entrypoint-initdb.d
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - pishield
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - pishield
+          initialDelaySeconds: 5
+          periodSeconds: 5
+      volumes:
+      - name: postgres-storage
+        persistentVolumeClaim:
+          claimName: postgres-pvc
+      - name: init-sql
+        configMap:
+          name: postgres-init-sql
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+  namespace: pi-shield
+spec:
+  selector:
+    app: postgres
+  ports:
+  - port: 5432
+    targetPort: 5432
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc
+  namespace: pi-shield
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-init-sql
+  namespace: pi-shield
+data:
+  init.sql: |
+    -- Pi Shield Database Schema
+    CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+    
+    -- Users table
+    CREATE TABLE IF NOT EXISTS users (
+        id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+        email TEXT UNIQUE NOT NULL,
+        password_hash TEXT,
+        full_name TEXT,
+        role TEXT DEFAULT 'user',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+    
+    -- Analyses table
+    CREATE TABLE IF NOT EXISTS analyses (
+        id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+        user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+        input_type TEXT NOT NULL CHECK (input_type IN ('image', 'video', 'text')),
+        input_uri TEXT NOT NULL,
+        status TEXT DEFAULT 'queued' CHECK (status IN ('queued', 'processing', 'done', 'failed')),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        finished_at TIMESTAMP
+    );
+    
+    -- Analysis reports table
+    CREATE TABLE IF NOT EXISTS analysis_reports (
+        id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+        analysis_id UUID UNIQUE REFERENCES analyses(id) ON DELETE CASCADE,
+        credibility_score FLOAT,
+        explanation JSONB,
+        artifacts JSONB,
+        version TEXT DEFAULT 'v1.0',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+    
+    -- Indexes
+    CREATE INDEX IF NOT EXISTS idx_analyses_user_id ON analyses(user_id);
+    CREATE INDEX IF NOT EXISTS idx_analyses_status ON analyses(status);
+    CREATE INDEX IF NOT EXISTS idx_analysis_reports_analysis_id ON analysis_reports(analysis_id);

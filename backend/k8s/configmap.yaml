@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pi-shield-config
+  namespace: pi-shield
+data:
+  GCS_BUCKET: "pi-shield-uploads"
+  MAX_FILE_SIZE: "52428800"  # 50MB
+  MAX_VIDEO_DURATION: "300"  # 5 minutes
+  FRAME_SAMPLE_RATE: "1"
+  REDIS_URL: "redis://redis-service:6379/0"
+  DATABASE_URL: "postgresql://pishield:password@postgres-service:5432/pishield"
